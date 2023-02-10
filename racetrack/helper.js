@@ -46,10 +46,15 @@ const bookSingleTrack = ({ trackArr, trackId, vehicleNumber, entryTime, }) => {
   })
 }
 
+const calculateRate = (initialRate, vehicleRate, hours) => {
+  return initialRate + (vehicleRate * hours);
+}
+
 module.exports = {
   convertTimestamp,
   checkEntryTime,
   checkExitTime,
   checkAvailability,
-  bookSingleTrack
+  bookSingleTrack,
+  calculateRate,
 };

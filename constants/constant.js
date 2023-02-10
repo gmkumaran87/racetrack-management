@@ -22,7 +22,7 @@ const ratePerHour = {
   carsRegular: 120,
   carsVip: 250,
   suvRegular: 200,
-  suvRegular: 300,
+  suvVip: 300,
 }
 const vehicleTypes = {
   BIKE: 'BIKE',

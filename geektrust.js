@@ -30,12 +30,17 @@ fs.readFile(filename, "utf8", (err, data) => {
           break;
         }
         const status = track.bookTrack({ vehicle, vehicleNumber, entryTime: timestamp });
+
+
         utility.printStatus(status);
         break;
       }
       case inputNames.ADDITIONAL: {
         let [vehicleNumber, exitTime] = restParams;
         let timestamp = convertTimestamp(exitTime);
+        console.log('BOoked', track.bikeTrack);
+        console.log('BOoked Cars', track.carTrack);
+        console.log('BOoked SUV', track.suvTrack);
         if (!checkExitTime(timestamp)) {
           utility.invalidEntryExitTime(outputTypes.INVALID_EXIT_TIME);
           break;

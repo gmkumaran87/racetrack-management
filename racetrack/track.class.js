@@ -1,9 +1,10 @@
-const { vehicleTypes, outputTypes, allowedTime } = require("../constants/constant");
-const { checkAvailability, bookSingleTrack } = require("./helper");
+const { vehicleTypes, outputTypes, allowedTime, ratePerHour } = require("../constants/constant");
+const { checkAvailability, bookSingleTrack, calculateRate } = require("./helper");
 
 class Track {
   constructor() {
     this.bikeTrack = {
+      totalRate: 0,
       totalTracks: 4,
       tracks: [
         { id: 1, name: "track1", vehicleNumber: undefined, entryTime: undefined, exitTime: undefined },
@@ -15,7 +16,7 @@ class Track {
     this.carTrack = {
       regularTrack: {
         totalTrack: 2,
-        availableTrack: 2,
+        totalRate: 0,
         tracks: [
           { id: 1, name: 'track1', vehicleNumber: undefined, entryTime: undefined, exitTime: undefined },
           { id: 2, name: 'track2', vehicleNumber: undefined, entryTime: undefined, exitTime: undefined }
@@ -23,7 +24,7 @@ class Track {
       },
       vipTrack: {
         totalTrack: 1,
-        availableTrack: 1,
+        totalRate: 0,
         tracks: [
           { id: 1, name: 'track1', vehicleNumber: undefined, entryTime: undefined, exitTime: undefined }
         ],
@@ -32,12 +33,14 @@ class Track {
     this.suvTrack = {
       regularTrack: {
         totalTrack: 1,
+        totalRate: 0,
         tracks: [
           { id: 1, name: 'track1', vehicleNumber: undefined, entryTime: undefined, exitTime: undefined },
         ]
       },
       vipTrack: {
         totalTrack: 1,
+        totalRate: 0,
         tracks: [
           { id: 1, name: 'track1', vehicleNumber: undefined, entryTime: undefined, exitTime: undefined }
         ],
@@ -52,8 +55,10 @@ class Track {
     if (trackId) {
       // Book a track for bike
       let bookedTrack = bookSingleTrack({ trackArr, trackId, vehicleNumber, entryTime });
+      let actualRate = calculateRate(this.bikeTrack.totalRate, ratePerHour.bike, 3)
+      // console.log('Actual rate', actualRate)
       this.bikeTrack.tracks = bookedTrack;
-
+      this.bikeTrack.totalRate = actualRate;
       // console.log('After booking track', this.bikeTrack);
       return outputTypes.SUCCESS;
     } else {
@@ -69,7 +74,11 @@ class Track {
 
       if (trackId) {
         let bookedTrack = bookSingleTrack({ trackArr, trackId, vehicleNumber, entryTime });
+        let trackRate = obj === 'regularTrack' ? ratePerHour.carsRegular : ratePerHour.carsVip;
+        let actualRate = calculateRate(this.carTrack[obj].totalRate, trackRate, 3);
+
         this.carTrack[obj].tracks = bookedTrack;
+        this.carTrack[obj].totalRate = actualRate;
         return outputTypes.SUCCESS;
       }
     }
@@ -80,12 +89,15 @@ class Track {
     // console.log('Inside car track');
     for (let obj in this.suvTrack) {
       let trackArr = [...this.suvTrack[obj].tracks];
-      // console.log('Car tracks', trackArr)
       let trackId = checkAvailability(trackArr);
 
       if (trackId) {
         let bookedTrack = bookSingleTrack({ trackArr, trackId, vehicleNumber, entryTime });
+        let trackRate = obj === 'regularTrack' ? ratePerHour.suvRegular : ratePerHour.suvVip;
+        let actualRate = calculateRate(this.suvTrack[obj].totalRate, trackRate, 3);
+
         this.suvTrack[obj].tracks = bookedTrack;
+        this.suvTrack[obj].totalRate = actualRate;
         return outputTypes.SUCCESS;
       }
     }
