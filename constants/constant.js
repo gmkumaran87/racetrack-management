@@ -14,6 +14,19 @@ const outputTypes = {
 const allowedTime = {
   startTime: 13 * 60 * 60 * 1000,
   endTime: 20 * 60 * 60 * 1000,
+  fullTime: 3 * 60 * 60 * 1000,
 };
 
-module.exports = { inputNames, allowedTime, outputTypes };
+const ratePerHour = {
+  bike: 60,
+  carsRegular: 120,
+  carsVip: 250,
+  suvRegular: 200,
+  suvRegular: 300,
+}
+const vehicleTypes = {
+  BIKE: 'BIKE',
+  CAR: 'CAR',
+  SUV: 'SUV',
+}
+module.exports = { inputNames, allowedTime, outputTypes, ratePerHour, vehicleTypes };

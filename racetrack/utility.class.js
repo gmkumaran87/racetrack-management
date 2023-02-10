@@ -2,6 +2,9 @@ class Utility {
   invalidEntryExitTime(time) {
     console.log(time);
   }
+  printStatus(status) {
+    console.log(status);
+  }
 }
 
-module.exports = new Utility();
+module.exports = Utility;

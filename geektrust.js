@@ -1,9 +1,11 @@
 const fs = require("fs");
 const { inputNames, outputTypes } = require("./constants/constant");
-const { convertTimestamp, checkEntryTime } = require("./racetrack/helper");
+const { convertTimestamp, checkEntryTime, checkExitTime } = require("./racetrack/helper");
 const Utility = require("./racetrack/utility.class");
+const Track = require("./racetrack/track.class");
 
 const utility = new Utility();
+const track = new Track();
 const filename = process.argv[2];
 
 fs.readFile(filename, "utf8", (err, data) => {
@@ -21,13 +23,24 @@ fs.readFile(filename, "utf8", (err, data) => {
       case inputNames.BOOK: {
         let [vehicle, vehicleNumber, entryTime] = restParams;
         let timestamp = convertTimestamp(entryTime);
+
+        // Validations
         if (!checkEntryTime(timestamp)) {
           utility.invalidEntryExitTime(outputTypes.INVALID_ENTRY_TIME);
           break;
         }
+        const status = track.bookTrack({ vehicle, vehicleNumber, entryTime: timestamp });
+        utility.printStatus(status);
         break;
       }
-      case inputNames.ADDITIONAL:
+      case inputNames.ADDITIONAL: {
+        let [vehicleNumber, exitTime] = restParams;
+        let timestamp = convertTimestamp(exitTime);
+        if (!checkExitTime(timestamp)) {
+          utility.invalidEntryExitTime(outputTypes.INVALID_EXIT_TIME);
+          break;
+        }
+      }
         break;
       case inputNames.REVENUE:
         break;
