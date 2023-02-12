@@ -38,13 +38,16 @@ fs.readFile(filename, "utf8", (err, data) => {
       case inputNames.ADDITIONAL: {
         let [vehicleNumber, exitTime] = restParams;
         let timestamp = convertTimestamp(exitTime);
-        console.log('BOoked', track.bikeTrack);
-        console.log('BOoked Cars', track.carTrack);
-        console.log('BOoked SUV', track.suvTrack);
+        /* console.log('BOoked', track.bikeTrack);
+         console.log('BOoked Cars', track.carTrack);
+         console.log('BOoked SUV', track.suvTrack);*/
         if (!checkExitTime(timestamp)) {
           utility.invalidEntryExitTime(outputTypes.INVALID_EXIT_TIME);
           break;
         }
+        track.additionalTime({ vehicleNumber, exitTime: timestamp })
+        console.log('BOoked', track.bikeTrack);
+
       }
         break;
       case inputNames.REVENUE:

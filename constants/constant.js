@@ -15,6 +15,7 @@ const allowedTime = {
   startTime: 13 * 60 * 60 * 1000,
   endTime: 20 * 60 * 60 * 1000,
   fullTime: 3 * 60 * 60 * 1000,
+  lastStartTime: 17 * 60 * 60 * 1000,
 };
 
 const ratePerHour = {

@@ -1,5 +1,4 @@
 const { allowedTime } = require("../constants/constant");
-
 const convertTimestamp = (timestamp) => {
   let [hours, minutes] = timestamp.split(":");
 
@@ -8,9 +7,14 @@ const convertTimestamp = (timestamp) => {
   return milliseconds;
 };
 
+const millisecondsToHoursMinutes = (milliseconds) => {
+  let time = new Date(milliseconds).toISOString().slice(11, 16).split(":").map(el => Number(el));
+  return time;
+
+}
 const checkEntryTime = (entryTime) => {
 
-  if (entryTime < allowedTime.startTime || entryTime > allowedTime.endTime) {
+  if (entryTime < allowedTime.startTime || entryTime > allowedTime.lastStartTime) {
     return false;
   }
   return true;
@@ -23,12 +27,11 @@ const checkExitTime = (exitTime) => {
   return true;
 }
 
-const checkAvailability = (trackObj) => {
-
-  let n = trackObj.length;
+const checkAvailability = ({ trackArr, entryTime }) => {
+  let n = trackArr.length;
   for (let i = 0; i < n; i++) {
-    if (trackObj[i].exitTime === undefined) {
-      return trackObj[i].id;
+    if (trackArr[i].exitTime === undefined || trackArr[i].exitTime < entryTime) {
+      return trackArr[i].id;
     }
   }
   return false;
@@ -49,7 +52,8 @@ const bookSingleTrack = ({ trackArr, trackId, vehicleNumber, entryTime, }) => {
 const calculateRate = (initialRate, vehicleRate, hours) => {
   return initialRate + (vehicleRate * hours);
 }
-
+/*
+const */
 module.exports = {
   convertTimestamp,
   checkEntryTime,
@@ -57,4 +61,6 @@ module.exports = {
   checkAvailability,
   bookSingleTrack,
   calculateRate,
+  millisecondsToHoursMinutes,
+  // getVehicleFromVehicleNumber
 };
