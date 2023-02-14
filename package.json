@@ -5,11 +5,19 @@
   "main": "index.js",
   "scripts": {
     "start": "node geektrust.js",
-    "test": "mocha"
+    "test": "jest"
   },
   "author": "geektrust",
   "license": "ISC",
-  "dependencies": {
-    "mocha": "^10.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmkumaran87/racetrack-management.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gmkumaran87/racetrack-management/issues"
+  },
+  "homepage": "https://github.com/gmkumaran87/racetrack-management#readme",
+  "devDependencies": {
+    "jest": "^29.4.2"
   }
 }

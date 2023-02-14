@@ -17,8 +17,6 @@ fs.readFile(filename, "utf8", (err, data) => {
     const action = line.split(" ")[0];
     const restParams = line.split(" ").slice(1);
 
-    console.log(action, restParams);
-
     switch (action) {
       case inputNames.BOOK: {
         let [vehicle, vehicleNumber, entryTime] = restParams;
@@ -30,27 +28,27 @@ fs.readFile(filename, "utf8", (err, data) => {
           break;
         }
         const status = track.bookTrack({ vehicle, vehicleNumber, entryTime: timestamp });
-
-
         utility.printStatus(status);
         break;
       }
       case inputNames.ADDITIONAL: {
         let [vehicleNumber, exitTime] = restParams;
         let timestamp = convertTimestamp(exitTime);
-        /* console.log('BOoked', track.bikeTrack);
-         console.log('BOoked Cars', track.carTrack);
-         console.log('BOoked SUV', track.suvTrack);*/
         if (!checkExitTime(timestamp)) {
           utility.invalidEntryExitTime(outputTypes.INVALID_EXIT_TIME);
           break;
         }
-        track.additionalTime({ vehicleNumber, exitTime: timestamp })
-        console.log('BOoked', track.bikeTrack);
-
-      }
+        let status = track.additionalTime({ vehicleNumber, exitTime: timestamp });
+        utility.printStatus(status);
         break;
+      }
+
       case inputNames.REVENUE:
+        let outObj = track.calculateRevenue();
+        /* console.log(track.bikeTrack)
+         console.log(track.carTrack);
+         console.log(track.suvTrack);*/
+        utility.printRevenue(outObj)
         break;
       default:
         throw new Error("Invalid action");
